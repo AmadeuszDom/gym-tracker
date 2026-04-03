@@ -4,7 +4,7 @@ function MainSection() {
   return (
     <section
       id="mainBody"
-      className="flex-1 p-6  bg-[#16161f] text-[#E4E4E7] flex "
+      className="flex-1 p-6 bg-[#16161f] text-[#E4E4E7] flex flex-col gap-6"
     >
       <MainSectionHeader username="Huju osrany oszczany" />
       <MainSectionSummary></MainSectionSummary>

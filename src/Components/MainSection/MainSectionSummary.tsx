@@ -64,15 +64,15 @@ function MainSectionSummary() {
         </svg>
       ),
       title: "TOTAL SETS",
-      value: 138,
+      value: "138 reps",
       color: "#EC4899",
       color2: "#F472B6",
     },
   ];
   return (
-    <div id="summary" className="px-3 flex flex-col gap-4">
-      <h2>Weekly Summary</h2>
-      <div id="summaryCards">
+    <div id="summary" className="mx-20 flex flex-col gap-4 items-start">
+      <h2 className="font-bold text-lg">Weekly Summary</h2>
+      <div id="summaryCards" className="flex flex-col gap-3 w-full">
         {cardsData.map((card, index) => (
           <SummaryCard
             key={index}
