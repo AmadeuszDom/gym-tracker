@@ -37,7 +37,7 @@ function MainSectionSummary() {
       <h2 className="font-bold text-lg">Weekly Summary</h2>
       <div
         id="summaryCards"
-        className="flex flex-col gap-0.5 w-full md:flex-row md:gap-x-6 md:gap-y-0 md:w-5/6 md:flex-wrap"
+        className="flex flex-col gap-0.5 w-full md:flex-row md:gap-x-6 md:gap-y-0 md:w-7/8 md:flex-wrap"
       >
         {cardsData.map((card, index) => (
           <SummaryCard

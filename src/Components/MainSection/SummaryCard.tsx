@@ -10,7 +10,7 @@ interface Props {
 
 function SummaryCard({ icon, title, value, color, color2, perc }: Props) {
   return (
-    <div className="summaryCard bg-[#2a2a3a]/40 rounded-2xl p-4 my-5 flex flex-col items-start gap-4 w-full md:flex-1">
+    <div className="summaryCard bg-[#2a2a3a]/40 rounded-2xl p-4 my-5 flex flex-col items-start gap-4 w-full md:flex-1 transition-all duration-300 hover:-translate-y-2 hover:shadow-lg hover:shadow-white hover:rotate-1">
       <div
         id="category"
         className="flex items-center justify-between gap-10 w-full "
