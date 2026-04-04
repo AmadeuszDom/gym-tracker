@@ -6,7 +6,7 @@ function MainSectionHeader({ username }: Props) {
   return (
     <div
       id="header"
-      className="flex flex-col p-4 px-20 rounded-lg md:items-center"
+      className="flex flex-col py-1.5 px-20 rounded-lg md:items-center"
     >
       <h1 className="font-bold text-2xl mb-2.5">
         Welcome back,{" "}
