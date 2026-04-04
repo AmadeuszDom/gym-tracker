@@ -70,9 +70,15 @@ function MainSectionSummary() {
     },
   ];
   return (
-    <div id="summary" className="mx-20 flex flex-col gap-4 items-start">
+    <div
+      id="summary"
+      className="flex flex-col gap-4 items-start md:items-center"
+    >
       <h2 className="font-bold text-lg">Weekly Summary</h2>
-      <div id="summaryCards" className="flex flex-col gap-3 w-full">
+      <div
+        id="summaryCards"
+        className="flex flex-col gap-3 w-full md:flex-row md:gap-x-6 md:gap-y-0 md:w-5/6 md:flex-wrap"
+      >
         {cardsData.map((card, index) => (
           <SummaryCard
             key={index}

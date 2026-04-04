@@ -13,7 +13,7 @@ function Sidebar({ isActive }: SidebarProps) {
 
   return (
     <section
-      className={`fixed top-17 inset-y-0 left-0 z-20 w-64 transform flex flex-col justify-between bg-[#16161F] text-[#E4E4E7] border-r-2 border-[#E8793B]/20 py-4 px-1.5 transition-all duration-300 ease-in-out md:relative md:w-60 md:inset-auto md:border-r-0 md:border-b-2 ${isActive ? "translate-x-0 opacity-100" : "-translate-x-full opacity-0 pointer-events-none md:translate-x-0 md:opacity-100 md:pointer-events-auto"}`}
+      className={`fixed top-17 inset-y-0 left-0 z-20 w-64 transform flex flex-col justify-between bg-[#16161F] text-[#E4E4E7] border-r-2 border-[#E8793B]/20 py-4 px-1.5 transition-all duration-300 ease-in-out md:relative md:w-60 md:inset-auto md:border-r-2 md:border-b-2 ${isActive ? "translate-x-0 opacity-100" : "-translate-x-full opacity-0 pointer-events-none md:translate-x-0 md:opacity-100 md:pointer-events-auto"}`}
     >
       <ul className="">
         {sidebarItems.map((item, index) => (

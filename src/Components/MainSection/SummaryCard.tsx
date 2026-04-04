@@ -8,7 +8,7 @@ interface Props {
 
 function SummaryCard({ icon, title, value, color, color2 }: Props) {
   return (
-    <div className="summaryCard bg-[#2a2a3a] rounded-2xl p-4 my-5 flex flex-col items-start gap-4 md:w-2/3 lg:w-2/5">
+    <div className="summaryCard bg-[#2a2a3a] rounded-2xl p-4 my-5 flex flex-col items-start gap-4 w-full md:flex-1">
       <div
         id="category"
         className="flex items-center justify-between gap-10 w-full "
@@ -20,7 +20,7 @@ function SummaryCard({ icon, title, value, color, color2 }: Props) {
         >
           {icon}
         </div>
-        <span className="text-[#4ADE80] bg-[#4ADE80]/10 p-2 rounded-2xl text-xs font-medium">
+        <span className="text-[#4ADE80] bg-[#4ADE80]/10 p-3 rounded-2xl text-xs font-medium">
           + X%
         </span>
       </div>
