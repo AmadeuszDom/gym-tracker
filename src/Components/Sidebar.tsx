@@ -4,11 +4,11 @@ interface SidebarProps {
 
 function Sidebar({ isActive }: SidebarProps) {
   const sidebarItems = [
-    "🏠 Dashboard",
-    "💪 Add Workout",
-    "📊 Progress",
-    "📅 History",
-    "⚙️ Settings",
+    { icon: "🏠", label: "Dashboard", route: "/dashboard" },
+    { icon: "💪", label: "Add Workout", route: "#" },
+    { icon: "📊", label: "Progress", route: "#" },
+    { icon: "📅", label: "History", route: "#" },
+    { icon: "⚙️", label: "Settings", route: "#" },
   ];
 
   return (
@@ -19,10 +19,10 @@ function Sidebar({ isActive }: SidebarProps) {
         {sidebarItems.map((item, index) => (
           <li key={index}>
             <a
-              href="#"
+              href={`${item.route}`}
               className="flex items-center gap-3 px-4 py-3 text-sm font-medium hover:bg-[#2a2a3a] transition text-[#E4E4E7] rounded-lg focus:text-[#E8793B] focus:bg-[#E8793B]/10"
             >
-              {item}
+              {item.icon} {item.label}
             </a>
           </li>
         ))}

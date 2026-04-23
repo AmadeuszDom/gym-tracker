@@ -38,7 +38,7 @@ function MainSectionRecents() {
       <h2 className="font-bold text-lg ">Recent activity</h2>
       <div
         id="activites"
-        className="flex flex-col w-full bg-[#2a2a3a]/40 rounded-2xl border-[#2a2a3a] border md:w-4/6 lg:w-1/2"
+        className="flex flex-col w-full  rounded-2xl border-[#2a2a3a] border md:w-4/6 lg:w-1/2"
       >
         {latestActivites.map((activity, index) => (
           <ActivityCard

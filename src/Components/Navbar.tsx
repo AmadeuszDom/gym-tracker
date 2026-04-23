@@ -27,7 +27,7 @@ function Navbar({ onMenuToggle }: NavbarProps) {
       </div>
       <div id="navLinks" className="hidden md:flex items-center gap-4 ml-6">
         <a
-          href="#"
+          href="/dashboard"
           className="nav-link px-3 py-1.5 rounded-md text-sm font-medium hover:text-white hover:bg-[#2a2a3a] transition text-[#8888A0] focus:text-[#E8793B] focus:bg-[#E8793B]/10"
         >
           DASHBOARD
