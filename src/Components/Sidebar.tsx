@@ -5,10 +5,10 @@ interface SidebarProps {
 function Sidebar({ isActive }: SidebarProps) {
   const sidebarItems = [
     { icon: "🏠", label: "Dashboard", route: "/dashboard" },
-    { icon: "💪", label: "Add Workout", route: "#" },
-    { icon: "📊", label: "Progress", route: "#" },
-    { icon: "📅", label: "History", route: "#" },
-    { icon: "⚙️", label: "Settings", route: "#" },
+    { icon: "💪", label: "Add Workout", route: "/" },
+    { icon: "📊", label: "Progress", route: "/" },
+    { icon: "📅", label: "History", route: "/" },
+    { icon: "⚙️", label: "Settings", route: "/" },
   ];
 
   return (
