@@ -1,5 +1,10 @@
 import { useState } from "react";
-import Icon from "../../../public/Icons";
+
+interface ExerciseItem {
+  name: string;
+  sets: number;
+  reps: number;
+}
 
 interface WorkoutPlanFormData {
   planName: string;
@@ -8,11 +13,24 @@ interface WorkoutPlanFormData {
   difficulty: "beginner" | "intermediate" | "advanced";
   targetMuscleGroups: string[];
   startDate: string;
+  exercises: ExerciseItem[];
 }
 
 interface AddWorkoutPlanFormProps {
   onClose: () => void;
   onSubmit: (data: WorkoutPlanFormData) => void;
+}
+
+interface FormErrors {
+  planName?: string;
+  targetMuscleGroups?: string;
+  exercises?: string;
+}
+
+interface ExerciseErrors {
+  name?: string;
+  sets?: string;
+  reps?: string;
 }
 
 const muscleGroups = [
@@ -35,21 +53,33 @@ function AddWorkoutPlanForm({ onClose, onSubmit }: AddWorkoutPlanFormProps) {
     difficulty: "intermediate",
     targetMuscleGroups: [],
     startDate: new Date().toISOString().split("T")[0],
+    exercises: [],
   });
 
-  const [errors, setErrors] = useState<Partial<WorkoutPlanFormData>>({});
+  const [exerciseData, setExerciseData] = useState<ExerciseItem>({
+    name: "",
+    sets: 1,
+    reps: 1,
+  });
+
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [exerciseError, setExerciseError] = useState<ExerciseErrors>({});
 
   const validateForm = (): boolean => {
-    const newErrors: Partial<WorkoutPlanFormData> = {};
+    const newErrors: FormErrors = {};
 
     if (!formData.planName.trim()) {
       newErrors.planName = "Plan name is required";
-    }
-    if (formData.planName.length < 3) {
+    } else if (formData.planName.length < 3) {
       newErrors.planName = "Plan name must be at least 3 characters";
     }
+
     if (formData.targetMuscleGroups.length === 0) {
-      newErrors.targetMuscleGroups = ["Select at least one muscle group"];
+      newErrors.targetMuscleGroups = "Select at least one muscle group";
+    }
+
+    if (formData.exercises.length === 0) {
+      newErrors.exercises = "Add at least one exercise";
     }
 
     setErrors(newErrors);
@@ -62,6 +92,49 @@ function AddWorkoutPlanForm({ onClose, onSubmit }: AddWorkoutPlanFormProps) {
       onSubmit(formData);
       onClose();
     }
+  };
+
+  const validateExercise = (): boolean => {
+    const exerciseErrors: ExerciseErrors = {};
+
+    if (!exerciseData.name.trim()) {
+      exerciseErrors.name = "Exercise name is required.";
+    }
+
+    if (exerciseData.sets < 1) {
+      exerciseErrors.sets = "Sets must be at least 1.";
+    }
+
+    if (exerciseData.reps < 1) {
+      exerciseErrors.reps = "Reps must be at least 1.";
+    }
+
+    setExerciseError(exerciseErrors);
+    return Object.keys(exerciseErrors).length === 0;
+  };
+
+  const handleAddExercise = () => {
+    if (!validateExercise()) return;
+
+    setFormData((prev) => ({
+      ...prev,
+      exercises: [...prev.exercises, exerciseData],
+    }));
+
+    setExerciseData({
+      name: "",
+      sets: 1,
+      reps: 1,
+    });
+    setExerciseError({});
+    setErrors((prev) => ({ ...prev, exercises: undefined }));
+  };
+
+  const handleRemoveExercise = (index: number) => {
+    setFormData((prev) => ({
+      ...prev,
+      exercises: prev.exercises.filter((_, i) => i !== index),
+    }));
   };
 
   const handleMuscleGroupChange = (group: string) => {
@@ -83,7 +156,7 @@ function AddWorkoutPlanForm({ onClose, onSubmit }: AddWorkoutPlanFormProps) {
           </h2>
           <button
             onClick={onClose}
-            className="text-[#8888A0] hover:text-[#E4E4E7] transition text-2xl"
+            className="text-[#8888A0] hover:text-[#E4E4E7] transition text-2xl cursor-pointer"
           >
             ×
           </button>
@@ -202,9 +275,123 @@ function AddWorkoutPlanForm({ onClose, onSubmit }: AddWorkoutPlanFormProps) {
             </div>
             {errors.targetMuscleGroups && (
               <p className="text-[#E8793B] text-xs mt-2">
-                {errors.targetMuscleGroups[0]}
+                {errors.targetMuscleGroups}
               </p>
             )}
+          </div>
+
+          {/* Exercises */}
+          <div>
+            <label className="block text-md font-bold text-[#E4E4E7] mb-2">
+              Exercises <span className="text-[#E8793B]">*</span>
+            </label>
+            <div className="grid gap-3">
+              <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
+                <div>
+                  <label className="block text-sm font-medium text-[#E4E4E7] mb-2">
+                    Name <span className="text-[#E8793B]">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={exerciseData.name}
+                    onChange={(e) =>
+                      setExerciseData((prev) => ({
+                        ...prev,
+                        name: e.target.value,
+                      }))
+                    }
+                    placeholder="Enter exercise name"
+                    className="w-full px-4 py-2 bg-[#1e1e2e] border border-[#2a2a3a] rounded-lg text-[#E4E4E7] focus:border-[#E8793B] focus:outline-none transition"
+                  />
+                  {exerciseError.name && (
+                    <p className="text-[#E8793B] text-xs mt-2">
+                      {exerciseError.name}
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-[#E4E4E7] mb-2">
+                    Sets <span className="text-[#E8793B]">*</span>
+                  </label>
+                  <input
+                    type="number"
+                    min="1"
+                    onChange={(e) =>
+                      setExerciseData((prev) => ({
+                        ...prev,
+                        sets: Number(e.target.value) || 1,
+                      }))
+                    }
+                    className="w-full px-4 py-2 bg-[#1e1e2e] border border-[#2a2a3a] rounded-lg text-[#E4E4E7] focus:border-[#E8793B] focus:outline-none transition"
+                    placeholder="1"
+                  />
+                  {exerciseError.sets && (
+                    <p className="text-[#E8793B] text-xs mt-2">
+                      {exerciseError.sets}
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-[#E4E4E7] mb-2">
+                    Reps <span className="text-[#E8793B]">*</span>
+                  </label>
+                  <input
+                    type="number"
+                    min="1"
+                    onChange={(e) =>
+                      setExerciseData((prev) => ({
+                        ...prev,
+                        reps: Number(e.target.value) || 1,
+                      }))
+                    }
+                    placeholder="1"
+                    className="w-full px-4 py-2 bg-[#1e1e2e] border border-[#2a2a3a] rounded-lg text-[#E4E4E7] focus:border-[#E8793B] focus:outline-none transition"
+                  />
+                  {exerciseError.reps && (
+                    <p className="text-[#E8793B] text-xs mt-2">
+                      {exerciseError.reps}
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between gap-3">
+                <button
+                  type="button"
+                  onClick={handleAddExercise}
+                  className="bg-[#4ADE80]/70 hover:bg-[#4ADE80]/90 text-[#E4E4E7] border border-[#2a2a3a] px-3 py-2 rounded-lg transition font-medium cursor-pointer"
+                >
+                  Add exercise
+                </button>
+                {errors.exercises && (
+                  <p className="text-[#E8793B] text-xs">{errors.exercises}</p>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* Exercise List */}
+          <div className="grid gap-3">
+            {formData.exercises.map((exercise, index) => (
+              <button
+                key={index}
+                type="button"
+                onClick={() => handleRemoveExercise(index)}
+                className="text-left bg-[#1e1e2e] border border-[#2a2a3a] rounded-xl p-3 hover:border-[#E8793B] transition"
+              >
+                <div className="flex items-center justify-between gap-3">
+                  <div>
+                    <p className="text-[#E4E4E7] font-medium">
+                      {exercise.name}
+                    </p>
+                    <p className="text-[#8888A0] text-xs">Click to remove</p>
+                  </div>
+                  <div className="text-[#E4E4E7] text-sm">
+                    {exercise.sets}x{exercise.reps}
+                  </div>
+                </div>
+              </button>
+            ))}
           </div>
 
           {/* Start Date */}
@@ -227,13 +414,13 @@ function AddWorkoutPlanForm({ onClose, onSubmit }: AddWorkoutPlanFormProps) {
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 py-2 px-4 bg-[#1e1e2e] text-[#E4E4E7] border border-[#2a2a3a] rounded-lg hover:border-[#8888A0] transition font-medium"
+              className="flex-1 py-2 px-4 bg-[#1e1e2e] text-[#E4E4E7] border border-[#2a2a3a] rounded-lg hover:border-[#8888A0] hover:bg-[#505070]/40 transition font-medium cursor-pointer"
             >
               Cancel
             </button>
             <button
               type="submit"
-              className="flex-1 py-2 px-4 bg-[#E8793B] text-[#111119] rounded-lg hover:bg-[#F4A261] transition font-medium"
+              className="flex-1 py-2 px-4 bg-[#E8793B] text-[#111119] rounded-lg hover:bg-[#F4A261] transition font-medium cursor-pointer"
             >
               Create Plan
             </button>

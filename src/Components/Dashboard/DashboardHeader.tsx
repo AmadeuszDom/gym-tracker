@@ -7,6 +7,12 @@ interface Props {
   username?: string;
 }
 
+interface ExerciseItem {
+  name: string;
+  sets: number;
+  reps: number;
+}
+
 interface WorkoutPlanFormData {
   planName: string;
   description: string;
@@ -14,6 +20,7 @@ interface WorkoutPlanFormData {
   difficulty: "beginner" | "intermediate" | "advanced";
   targetMuscleGroups: string[];
   startDate: string;
+  exercises: ExerciseItem[];
 }
 
 function DashboardHeader({ username }: Props) {
