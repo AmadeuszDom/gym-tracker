@@ -1,3 +1,9 @@
+interface ExerciseItem {
+  name: string;
+  sets: number;
+  reps: number;
+}
+
 interface WorkoutPlanData {
   planName: string;
   description: string;
@@ -5,16 +11,19 @@ interface WorkoutPlanData {
   difficulty: "beginner" | "intermediate" | "advanced";
   targetMuscleGroups: string[];
   startDate: string;
+  exercises: ExerciseItem[];
 }
 
 interface DashboardWorkoutPlanProps {
   workoutPlan: WorkoutPlanData;
   onClick?: () => void;
+  onRemove?: () => void;
 }
 
 function DashboardWorkoutPlan({
   workoutPlan,
   onClick,
+  onRemove,
 }: DashboardWorkoutPlanProps) {
   const getDifficultyText = (difficulty: string) => {
     switch (difficulty) {
@@ -53,7 +62,21 @@ function DashboardWorkoutPlan({
           <h3 className="font-bold text-lg text-[#E4E4E7] truncate">
             {workoutPlan.planName}
           </h3>
-          <span className="text-[#8888A0] text-sm">›</span>
+          <div className="flex items-center gap-2">
+            {onRemove && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onRemove();
+                }}
+                className="text-[#8888A0] hover:text-[#EF4444] transition text-lg"
+                title="Delete plan"
+              >
+                ×
+              </button>
+            )}
+            <span className="text-[#8888A0] text-sm">›</span>
+          </div>
         </div>
 
         {/* Description */}

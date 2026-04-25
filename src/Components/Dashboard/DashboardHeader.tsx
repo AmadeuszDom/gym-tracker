@@ -2,6 +2,7 @@ import { useState } from "react";
 import Icon from "../../../public/Icons";
 import AddWorkoutPlanForm from "./AddWorkoutPlanForm";
 import DashboardWorkoutPlan from "./DashboardWorkoutPlan";
+import WorkoutPlanDetails from "./WorkoutPlanDetails";
 
 interface Props {
   username?: string;
@@ -25,6 +26,10 @@ interface WorkoutPlanFormData {
 
 function DashboardHeader({ username }: Props) {
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [isPlanOpen, setIsPlanOpen] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState<WorkoutPlanFormData | null>(
+    null,
+  );
   const [workoutPlans, setWorkoutPlans] = useState<WorkoutPlanFormData[]>([]);
 
   const handleFormSubmit = (data: WorkoutPlanFormData) => {
@@ -34,8 +39,19 @@ function DashboardHeader({ username }: Props) {
   };
 
   const handleWorkoutPlanClick = (plan: WorkoutPlanFormData) => {
-    console.log("Workout plan clicked:", plan);
-    // TODO: Navigate to workout plan details
+    setSelectedPlan(plan);
+    setIsPlanOpen(true);
+  };
+
+  const handleClosePlan = () => {
+    setIsPlanOpen(false);
+    setSelectedPlan(null);
+  };
+
+  const handleRemovePlan = (planToRemove: WorkoutPlanFormData) => {
+    setWorkoutPlans((prev) => prev.filter((plan) => plan !== planToRemove));
+    setIsPlanOpen(false);
+    setSelectedPlan(null);
   };
 
   return (
@@ -63,6 +79,7 @@ function DashboardHeader({ username }: Props) {
               key={index}
               workoutPlan={plan}
               onClick={() => handleWorkoutPlanClick(plan)}
+              onRemove={() => handleRemovePlan(plan)}
             />
           ))}
         </div>
@@ -84,6 +101,14 @@ function DashboardHeader({ username }: Props) {
         <AddWorkoutPlanForm
           onClose={() => setIsFormOpen(false)}
           onSubmit={handleFormSubmit}
+        />
+      )}
+
+      {isPlanOpen && selectedPlan && (
+        <WorkoutPlanDetails
+          wDetails={selectedPlan}
+          onClose={handleClosePlan}
+          onRemove={() => handleRemovePlan(selectedPlan)}
         />
       )}
     </div>
