@@ -1,119 +1,121 @@
-# Gym Tracker
+# 🏋️ Gym Tracker
 
-A modern, responsive web application for tracking your gym workouts, monitoring progress, and managing your fitness journey.
+A modern, responsive web application for tracking your gym workouts, monitoring progress, and managing your fitness journey. Perfect for fitness enthusiasts who want to stay organized and motivated!
 
-## Features
+## ✨ Features
 
-- **Dashboard**: Overview of your recent activities and key metrics
-- **Add Workout**: Log new workout sessions with exercises, sets, reps, and weights
-- **Progress**: Visualize your fitness progress over time with charts and statistics
-- **History**: Browse and review past workout sessions
-- **Settings**: Customize your profile and app preferences
+- **📊 Dashboard**: Get a quick overview of your recent activities and key fitness metrics at a glance
+- **📋 Workout Plans**: Create and manage custom workout plans with exercises tailored to your goals
+- **💪 Workouts**: Track your workout sessions in real-time and log your exercises, sets, and reps
+- **📈 Progress**: Visualize your fitness progress over time with intuitive charts and statistics
+- **📜 History**: Browse and review your past workout sessions to see how far you've come
+- **⚙️ Settings**: Customize your profile and app preferences to match your fitness style
 
-## Tech Stack
-
-- **Frontend**: React 19 with TypeScript
-- **Styling**: Tailwind CSS
-- **Build Tool**: Vite
-- **Routing**: React Router DOM
-- **Icons**: React Icons
-
-## Getting Started
+## 🚀 Getting Started
 
 ### Prerequisites
 
-- Node.js (version 18 or higher)
-- npm or yarn
+Before you begin, make sure you have the following installed:
+- **Node.js** (version 18 or higher) - [Download here](https://nodejs.org/)
+- **npm** (comes with Node.js) or **yarn** as your package manager
 
 ### Installation
 
-1. Clone the repository:
+Follow these simple steps to get Gym Tracker up and running on your local machine:
 
+1. **Clone the repository**
    ```bash
    git clone https://github.com/AmadeuszDom/gym-tracker.git
    cd gym-tracker
    ```
 
-2. Install dependencies:
-
+2. **Install dependencies**
    ```bash
    npm install
    ```
 
-3. Start the development server:
-
+3. **Start the development server**
    ```bash
    npm run dev
    ```
 
-4. Open your browser and navigate to `http://localhost:5173`
+4. **Open your browser**
+   Navigate to `http://localhost:5173` and start tracking your workouts!
 
-### Build for Production
+### Building for Production
+
+When you're ready to deploy your app:
 
 ```bash
 npm run build
 ```
 
-### Preview Production Build
+To preview the production build locally:
 
 ```bash
 npm run preview
 ```
 
-## Project Structure
+## 🛠️ Tech Stack
+
+- **Frontend**: React 19 with TypeScript for type-safe development
+- **Styling**: Tailwind CSS for modern, responsive design
+- **Build Tool**: Vite for lightning-fast development experience
+- **Routing**: React Router DOM for seamless navigation
+- **Icons**: React Icons for beautiful, consistent iconography
+
+## 📁 Project Structure
 
 ```
 src/
 ├── Components/
-│   ├── Navbar.tsx
-│   ├── Sidebar.tsx
-│   └── MainSection/
-│       ├── ActivityCard.tsx
-│       ├── MainSection.tsx
-│       ├── MainSectionHeader.tsx
-│       ├── MainSectionRecents.tsx
-│       ├── MainSectionSummary.tsx
-│       └── SummaryCard.tsx
-├── App.tsx
-├── Dashboard.tsx
-├── main.tsx
-└── index.css
+│   ├── Navbar.tsx              # Main navigation bar
+│   ├── Sidebar.tsx             # Side navigation menu
+│   └── MainSection/            # Dashboard components
+│       ├── ActivityCard.tsx    # Individual activity display
+│       ├── MainSection.tsx     # Main dashboard layout
+│       ├── MainSectionHeader.tsx    # Dashboard header
+│       ├── MainSectionRecents.tsx   # Recent activities
+│       ├── MainSectionSummary.tsx   # Summary statistics
+│       └── SummaryCard.tsx     # Summary card component
+├── App.tsx                     # Main application component
+├── Dashboard.tsx               # Dashboard page
+├── main.tsx                    # Application entry point
+└── index.css                   # Global styles
 ```
 
-## Contributing
+## 🤝 Contributing
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+We welcome contributions! Here's how you can help:
 
-## License
+1. **Fork the repository**
+2. **Create a feature branch**
+   ```bash
+   git checkout -b feature/amazing-feature
+   ```
+3. **Commit your changes**
+   ```bash
+   git commit -m 'Add some amazing feature'
+   ```
+4. **Push to the branch**
+   ```bash
+   git push origin feature/amazing-feature
+   ```
+5. **Open a Pull Request**
+
+## 📝 License
 
 This project is private and not licensed for public use.
-import reactDom from 'eslint-plugin-react-dom'
 
-export default defineConfig([
-globalIgnores(['dist']),
-{
-files: ['**/*.{ts,tsx}'],
-extends: [
-// Other configs...
-// Enable lint rules for React
-reactX.configs['recommended-typescript'],
-// Enable lint rules for React DOM
-reactDom.configs.recommended,
-],
-languageOptions: {
-parserOptions: {
-project: ['./tsconfig.node.json', './tsconfig.app.json'],
-tsconfigRootDir: import.meta.dirname,
-},
-// other options...
-},
-},
-])
+## 💡 Tips for Using Gym Tracker
 
-```
+- Start by creating your first workout plan in the "Workout Plans" section
+- Use the dashboard to track your daily progress and stay motivated
+- Check the "History" section to review your past workouts and identify patterns
+- Customize your settings to personalize your experience
+
+---
+
+Made with ❤️ for fitness enthusiasts
 
 ```
