@@ -121,11 +121,12 @@ function AddWorkoutPlanForm({ onClose, onSubmit }: AddWorkoutPlanFormProps) {
       exercises: [...prev.exercises, exerciseData],
     }));
 
-    setExerciseData({
+    setExerciseData((prev) => ({
       name: "",
-      sets: 1,
-      reps: 1,
-    });
+      sets: prev.sets,
+      reps: prev.reps,
+    }));
+
     setExerciseError({});
     setErrors((prev) => ({ ...prev, exercises: undefined }));
   };
@@ -257,7 +258,7 @@ function AddWorkoutPlanForm({ onClose, onSubmit }: AddWorkoutPlanFormProps) {
             <label className="block text-sm font-medium text-[#E4E4E7] mb-3">
               Target Muscle Groups <span className="text-[#E8793B]">*</span>
             </label>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-3 gap-2">
               {muscleGroups.map((group) => (
                 <label
                   key={group}

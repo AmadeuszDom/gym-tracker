@@ -116,7 +116,7 @@ function WorkoutPlanDetails({
           {/* Remove Button */}
           <button
             onClick={onRemove}
-            className="px-4 py-2 text-[#111119] bg-[#EF4444]/90 hover:bg-[#EF4444]/70 rounded-lg transition font-md cursor-pointer mr-3"
+            className="px-4 py-2 text-[#111119] bg-[#EF4444]/90 hover:bg-[#F87171] rounded-lg transition font-md cursor-pointer mr-3"
           >
             Delete
           </button>
