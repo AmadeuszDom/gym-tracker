@@ -287,7 +287,7 @@ function AddWorkoutPlanForm({ onClose, onSubmit }: AddWorkoutPlanFormProps) {
               Exercises <span className="text-[#E8793B]">*</span>
             </label>
             <div className="grid gap-3">
-              <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
+              <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
                 <div>
                   <label className="block text-sm font-medium text-[#E4E4E7] mb-2">
                     Name <span className="text-[#E8793B]">*</span>
