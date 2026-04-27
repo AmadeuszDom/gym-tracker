@@ -1,5 +1,4 @@
 import DashboardHeader from "./DashboardHeader";
-import DashboardPlanSection from "./DashboardPlanSection";
 
 function DashboardSection() {
   return (
