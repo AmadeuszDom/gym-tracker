@@ -13,6 +13,9 @@ A modern, responsive web application for tracking your gym workouts, monitoring 
 
 ## 🚀 Getting Started
 
+[![Node.js](https://img.shields.io/badge/Node.js->=18-brightgreen)](https://nodejs.org/)
+[![License](https://img.shields.io/badge/License-Private-lightgrey)](LICENSE)
+
 ### Prerequisites
 
 Before you begin, make sure you have the following installed:

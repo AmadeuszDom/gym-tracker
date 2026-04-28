@@ -1,9 +1,85 @@
+import React, { useState, useEffect } from "react";
+
+interface ExerciseItem {
+  name: string;
+  sets: number;
+  reps: number;
+}
+
+interface WorkoutData {
+  planName: string;
+  date: string;
+  exercises: ExerciseItem[];
+}
+
 function RecentWorkouts() {
+  const [workouts, setWorkouts] = useState<WorkoutData[]>([]);
+
+  // Load workouts from localStorage on mount
+  useEffect(() => {
+    const stored =
+      typeof window !== "undefined" ? localStorage.getItem("workouts") : null;
+    const initial = stored ? JSON.parse(stored) : [];
+    setWorkouts(initial);
+  }, []);
+  // Compute recent workouts from state
+  const recent = workouts.slice().reverse().slice(0, 5);
+
+  const handleWorkoutDelete = (w: WorkoutData) => {
+    const updatedWorkouts = workouts.filter((workout) => workout !== w);
+    setWorkouts(updatedWorkouts);
+    localStorage.setItem("workouts", JSON.stringify(updatedWorkouts));
+  };
   return (
-    <div className="p-4 bg-[#111119] text-[#E4E4E7] flex gap-6 justify-between">
-      <h2 className="text-2xl font-medium">Recent Workouts</h2>
-      <p>History</p>
-    </div>
+    <>
+      <div className="p-4 bg-[#111119] text-[#E4E4E7] flex gap-6 justify-between">
+        <h2 className="text-2xl font-medium">Recent Workouts</h2>
+        <p>History</p>
+      </div>
+      <div className="flex flex-wrap gap-6 p-4 items-start">
+        {recent.length === 0 ? (
+          <p className="text-[#8888A0]">No workouts yet. Start training!</p>
+        ) : (
+          recent.map((workout: WorkoutData, index: number) => (
+            <div
+              key={index}
+              className="flex flex-col gap-2 bg-[#16161F] border border-[#2a2a3a] rounded-2xl p-4 max-w-md"
+            >
+              <h3 className="text-lg font-semibold text-[#E4E4E7] text-center truncate">
+                {workout.planName}
+              </h3>
+
+              {/*Exercises */}
+
+              <div className="flex p-2 flex-wrap justify-center">
+                {workout.exercises.map((exercise) => (
+                  <div
+                    className="flex flex-col gap-1.5 border-2 border-[#2a2a3a] p-2 m-1 rounded-2xl transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-white hover:bg-[#2a2a3a]/70 hover:rotate-3"
+                    key={exercise.name}
+                  >
+                    <h4 className="text-md font-medium text-[#E4E4E7]">
+                      {exercise.name}
+                    </h4>
+                    <p className="text-[#8888A0]">
+                      {exercise.sets} sets of {exercise.reps} reps
+                    </p>
+                  </div>
+                ))}
+              </div>
+              <div className="flex justify-between">
+                <p className="text-[#E4E4E7] self-end-safe">{workout.date}</p>
+                <button
+                  className="px-4 py-2 text-[#111119] bg-[#EF4444]/90 hover:bg-[#F87171] rounded-lg transition font-md cursor-pointer"
+                  onClick={() => handleWorkoutDelete(workout)}
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+    </>
   );
 }
 

@@ -21,6 +21,8 @@ interface WorkoutPlanFormData {
 }
 
 interface WorkoutData {
+  planName: string;
+  date: string;
   exercises: ExerciseItem[];
 }
 
@@ -119,6 +121,8 @@ function AddWorkoutForm({ onClose }: Props) {
     const stored = localStorage.getItem("workouts");
     const existing: WorkoutData[] = stored ? JSON.parse(stored) : [];
     const newWorkout: WorkoutData = {
+      planName: selectedPlan.planName,
+      date: new Date().toISOString().split("T")[0],
       exercises: selectedPlan.exercises,
     };
     existing.push(newWorkout);
@@ -166,7 +170,7 @@ function AddWorkoutForm({ onClose }: Props) {
             }}
             className="bg-[#2a2a3a] text-[#E4E4E7] p-3 rounded-lg focus:outline-none"
           >
-            <option disabled>
+            <option>
               {workoutPlans.length === 0
                 ? "No workout plans available"
                 : "Select a plan"}

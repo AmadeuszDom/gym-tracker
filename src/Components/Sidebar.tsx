@@ -16,7 +16,7 @@ function Sidebar({ isActive }: SidebarProps) {
       method: () => setIsAddWorkoutOpen(!isAddWorkoutOpen),
     },
     { icon: "📊", label: "Progress", route: "/" },
-    { icon: "📅", label: "History", route: "/" },
+    { icon: "📅", label: "History", route: "/workouts" },
     { icon: "⚙️", label: "Settings", route: "/" },
   ];
 

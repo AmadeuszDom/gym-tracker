@@ -19,14 +19,26 @@ function createWeekDays(today: Date) {
 
 function WorkoutsCalendar() {
   const today = new Date();
-  const normalizedToday = new Date(today);
-  normalizedToday.setHours(0, 0, 0, 0);
+  today.setHours(0, 0, 0, 0);
+
+  const formatLocalDate = (date: Date) =>
+    `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(
+      date.getDate(),
+    ).padStart(2, "0")}`;
+
+  const todayString = formatLocalDate(today);
   const weekDays = createWeekDays(today);
+  // Dates of past days in this week
   const completedDates = new Set(
     weekDays
-      .filter((day) => day.getTime() < normalizedToday.getTime())
-      .map((day) => day.toDateString()),
+      .filter((day) => formatLocalDate(day) < todayString)
+      .map((day) => formatLocalDate(day)),
   );
+  // Dates from stored workouts
+  const stored =
+    typeof window !== "undefined" ? localStorage.getItem("workouts") : null;
+  const storedWorkouts: { date: string }[] = stored ? JSON.parse(stored) : [];
+  const storedDates = new Set(storedWorkouts.map((w) => w.date));
 
   return (
     <div className="bg-[#16161F] border border-[#2a2a3a] rounded-[28px] p-5 w-full max-w-4xl mx-auto">
@@ -41,7 +53,7 @@ function WorkoutsCalendar() {
             </h2>
           </div>
           <p className="text-sm text-[#E4E4E7]/80">
-            {weekDays[0].toLocaleDateString("pl-PL", {
+            {today.toLocaleDateString("pl-PL", {
               day: "numeric",
               month: "short",
             })}{" "}
@@ -55,9 +67,8 @@ function WorkoutsCalendar() {
 
         <div className="grid grid-cols-7 gap-3">
           {weekDays.map((date, index) => {
-            const isToday = date.toDateString() === new Date().toDateString();
-            const hasWorkout =
-              completedDates.has(date.toDateString()) || isToday;
+            const isToday = formatLocalDate(date) === todayString;
+            const hasWorkout = storedDates.has(date.toDateString());
             const dotClass = isToday
               ? "bg-[#4ADE80]"
               : hasWorkout
