@@ -13,14 +13,33 @@ interface WorkoutData {
 }
 
 function RecentWorkouts() {
-  const [workouts, setWorkouts] = useState<WorkoutData[]>([]);
+  const [selectedWorkout, setSelectedWorkout] = useState<WorkoutData | null>(
+    null,
+  );
 
-  // Load workouts from localStorage on mount
-  useEffect(() => {
+  const [isEditingVisible, setIsEditingVisible] = useState(false);
+
+  // Initialise workouts from localStorage and stay synced via the storage event
+  const [workouts, setWorkouts] = useState<WorkoutData[]>(() => {
     const stored =
       typeof window !== "undefined" ? localStorage.getItem("workouts") : null;
-    const initial = stored ? JSON.parse(stored) : [];
-    setWorkouts(initial);
+    return stored ? JSON.parse(stored) : [];
+  });
+
+  useEffect(() => {
+    const handleStorage = (e: StorageEvent) => {
+      if (e.key === "workouts") {
+        const stored =
+          typeof window !== "undefined"
+            ? localStorage.getItem("workouts")
+            : null;
+        setWorkouts(stored ? JSON.parse(stored) : []);
+      }
+    };
+    window.addEventListener("storage", handleStorage);
+    return () => {
+      window.removeEventListener("storage", handleStorage);
+    };
   }, []);
   // Compute recent workouts from state
   const recent = workouts.slice().reverse().slice(0, 5);
@@ -30,6 +49,11 @@ function RecentWorkouts() {
     setWorkouts(updatedWorkouts);
     localStorage.setItem("workouts", JSON.stringify(updatedWorkouts));
   };
+
+  const handleWorkoutSelect = (w: WorkoutData) => {
+    setSelectedWorkout(w);
+  };
+
   return (
     <>
       <div className="p-4 bg-[#111119] text-[#E4E4E7] flex gap-6 justify-between">
@@ -45,7 +69,7 @@ function RecentWorkouts() {
               key={index}
               className="flex flex-col gap-2 bg-[#16161F] border border-[#2a2a3a] rounded-2xl p-4 max-w-md"
             >
-              <h3 className="text-lg font-semibold text-[#E4E4E7] text-center truncate">
+              <h3 className="text-lg font-semibold text-[#E4E4E7] text-center">
                 {workout.planName}
               </h3>
 
@@ -68,12 +92,23 @@ function RecentWorkouts() {
               </div>
               <div className="flex justify-between">
                 <p className="text-[#E4E4E7] self-end-safe">{workout.date}</p>
-                <button
-                  className="px-4 py-2 text-[#111119] bg-[#EF4444]/90 hover:bg-[#F87171] rounded-lg transition font-md cursor-pointer"
-                  onClick={() => handleWorkoutDelete(workout)}
-                >
-                  Delete
-                </button>
+
+                {/*Buttons */}
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => handleWorkoutSelect(workout)}
+                    className="px-4 py-2 bg-[#E8793B] text-[#111119] rounded-lg hover:bg-[#F4A261] transition font-medium cursor-pointer"
+                  >
+                    Edit
+                  </button>
+
+                  <button
+                    className="px-4 py-2 text-[#111119] bg-[#EF4444]/90 hover:bg-[#F87171] rounded-lg transition font-medium cursor-pointer"
+                    onClick={() => handleWorkoutDelete(workout)}
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
             </div>
           ))
