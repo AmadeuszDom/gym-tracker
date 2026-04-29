@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import EditWorkout from "./EditWorkout";
 
 interface ExerciseItem {
   name: string;
@@ -52,6 +53,12 @@ function RecentWorkouts() {
 
   const handleWorkoutSelect = (w: WorkoutData) => {
     setSelectedWorkout(w);
+    setIsEditingVisible(true);
+  };
+
+  const handleEditClose = () => {
+    setSelectedWorkout(null);
+    setIsEditingVisible(false);
   };
 
   return (
@@ -97,13 +104,13 @@ function RecentWorkouts() {
                 <div className="flex gap-3">
                   <button
                     onClick={() => handleWorkoutSelect(workout)}
-                    className="px-4 py-2 bg-[#E8793B] text-[#111119] rounded-lg hover:bg-[#F4A261] transition font-medium cursor-pointer"
+                    className="px-3 py-1.5 bg-[#2a2a3a] text-[#E4E4E7] border border-[#3a3a4a] rounded-md hover:bg-[#3a3a4a] hover:text-[#E8793B] transition font-medium cursor-pointer"
                   >
                     Edit
                   </button>
 
                   <button
-                    className="px-4 py-2 text-[#111119] bg-[#EF4444]/90 hover:bg-[#F87171] rounded-lg transition font-medium cursor-pointer"
+                    className="px-3 py-1.5 text-[#E4E4E7] bg-[#2a2a3a] border border-[#3a3a4a] rounded-md hover:text-[#EF4444]/90 transition font-medium cursor-pointer"
                     onClick={() => handleWorkoutDelete(workout)}
                   >
                     Delete
@@ -112,6 +119,12 @@ function RecentWorkouts() {
               </div>
             </div>
           ))
+        )}
+        {isEditingVisible && (
+          <EditWorkout
+            onClose={handleEditClose}
+            workout={selectedWorkout || null}
+          />
         )}
       </div>
     </>
