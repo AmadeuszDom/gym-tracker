@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 interface ExerciseItem {
   name: string;
@@ -13,76 +13,36 @@ interface WorkoutData {
 }
 
 interface Props {
-  onClose?: () => void;
+  onClose: () => void;
+  onSave: (updatedWorkout: WorkoutData) => void;
   workout: WorkoutData | null;
 }
 
-interface ExerciseErrors {
-  name?: string;
-  sets?: string;
-  reps?: string;
-}
+function EditWorkout({ onClose, onSave, workout }: Props) {
+  const [editedExercises, setEditedExercises] = useState<ExerciseItem[]>(
+    workout?.exercises || [],
+  );
 
-function EditWorkout({ onClose, workout }: Props) {
-  const [workouts, setWorkouts] = useState<WorkoutData[]>([]);
-  const [exerciseError, setExerciseError] = useState<ExerciseErrors>({});
-  const [exerciseData, setExerciseData] = useState<ExerciseItem>({
-    name: "",
-    sets: 0,
-    reps: 0,
-  });
-
-  // Load workouts from localStorage on mount
-  useEffect(() => {
-    const savedWorkouts = localStorage.getItem("workouts");
-    if (savedWorkouts) {
-      setWorkouts(JSON.parse(savedWorkouts));
-    }
-  }, []);
-
-  const validateWorkout = (): boolean => {
-    const exerciseErrors: ExerciseErrors = {};
-
-    if (!exerciseData.name.trim()) {
-      exerciseErrors.name = "Exercise name is required.";
-    }
-    if (exerciseData.sets <= 0) {
-      exerciseErrors.sets = "Number of sets must be a positive integer.";
-    }
-    if (exerciseData.reps <= 0) {
-      exerciseErrors.reps = "Number of reps must be a positive integer.";
-    }
-    setExerciseError(exerciseErrors);
-    return Object.keys(exerciseErrors).length === 0;
-  };
-
-  const handleChangeName = (eName: string) => {
-    setExerciseData((prev) => ({ ...prev, name: eName }));
-  };
-
-  const handleChangeSets = (eSets: number) => {
-    setExerciseData((prev) => ({ ...prev, sets: eSets }));
-  };
-  const handleChangeReps = (eReps: number) => {
-    setExerciseData((prev) => ({ ...prev, reps: eReps }));
-  };
-
-  const updateWorkout = (workout: WorkoutData) => {
-    workout.exercises = exerciseData
-      ? [...workout.exercises, exerciseData]
-      : workout.exercises;
+  const handleExerciseChange = (
+    index: number,
+    field: keyof ExerciseItem,
+    value: string | number,
+  ) => {
+    setEditedExercises((prev) =>
+      prev.map((ex, i) => (i === index ? { ...ex, [field]: value } : ex)),
+    );
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!validateWorkout()) {
-      return;
-    }
-    updateWorkout(workout!);
-    localStorage.setItem("workouts", JSON.stringify(workouts));
-    setExerciseError({});
-    setExerciseData({ name: "", sets: 0, reps: 0 });
-    onClose && onClose();
+
+    const updated: WorkoutData = {
+      ...workout!,
+      exercises: editedExercises,
+    };
+
+    onSave(updated);
+    onClose();
   };
 
   return (
@@ -113,32 +73,36 @@ function EditWorkout({ onClose, workout }: Props) {
               <h4>Sets</h4>
               <h4>Reps</h4>
             </div>
-            {workout?.exercises.map((exercise, index) => (
+            {editedExercises.map((exercise, index) => (
               <div
                 key={index}
                 className="flex items-start justify-between gap-1.5"
               >
                 <input
                   type="text"
-                  defaultValue={exercise.name}
+                  value={exercise.name}
                   className="rounded-2xl bg-[#2a2a3a] p-1 w-full text-center"
-                  onChange={(e) => handleChangeName(e.target.value)}
+                  onChange={(e) =>
+                    handleExerciseChange(index, "name", e.target.value)
+                  }
                 />
                 <input
                   type="number"
                   min="0"
-                  name=""
-                  defaultValue={exercise.sets}
+                  value={exercise.sets}
                   className="rounded-2xl bg-[#2a2a3a] p-1 w-full text-center"
-                  onChange={(e) => handleChangeSets(parseInt(e.target.value))}
+                  onChange={(e) =>
+                    handleExerciseChange(index, "sets", Number(e.target.value))
+                  }
                 />
                 <input
                   type="number"
                   min="0"
-                  name=""
-                  defaultValue={exercise.reps}
+                  value={exercise.reps}
                   className="rounded-2xl bg-[#2a2a3a] p-1 w-full text-center"
-                  onChange={(e) => handleChangeReps(parseInt(e.target.value))}
+                  onChange={(e) =>
+                    handleExerciseChange(index, "reps", Number(e.target.value))
+                  }
                 />
               </div>
             ))}

@@ -2,6 +2,7 @@ import { useState } from "react";
 
 interface Props {
   onClose?: () => void;
+  onWorkoutCreated?: () => void;
 }
 
 interface ExerciseItem {
@@ -39,7 +40,7 @@ interface ExerciseErrors {
   };
 }
 
-function AddWorkoutForm({ onClose }: Props) {
+function AddWorkoutForm({ onClose, onWorkoutCreated }: Props) {
   const workoutPlans: WorkoutPlanFormData[] = localStorage.getItem(
     "workoutPlans",
   )
@@ -127,6 +128,9 @@ function AddWorkoutForm({ onClose }: Props) {
     };
     existing.push(newWorkout);
     localStorage.setItem("workouts", JSON.stringify(existing));
+    if (onWorkoutCreated) {
+      onWorkoutCreated();
+    }
     // Reset state
     setSelectedPlan({
       planName: "",

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import EditWorkout from "./EditWorkout";
 
 interface ExerciseItem {
@@ -13,43 +13,25 @@ interface WorkoutData {
   exercises: ExerciseItem[];
 }
 
-function RecentWorkouts() {
+interface RecentWorkoutsProps {
+  workouts: WorkoutData[];
+  onWorkoutUpdate: (updatedWorkout: WorkoutData) => void;
+  onWorkoutDelete: (deletedWorkout: WorkoutData) => void;
+}
+
+function RecentWorkouts({
+  workouts,
+  onWorkoutUpdate,
+  onWorkoutDelete,
+}: RecentWorkoutsProps) {
   const [selectedWorkout, setSelectedWorkout] = useState<WorkoutData | null>(
     null,
   );
 
   const [isEditingVisible, setIsEditingVisible] = useState(false);
 
-  // Initialise workouts from localStorage and stay synced via the storage event
-  const [workouts, setWorkouts] = useState<WorkoutData[]>(() => {
-    const stored =
-      typeof window !== "undefined" ? localStorage.getItem("workouts") : null;
-    return stored ? JSON.parse(stored) : [];
-  });
-
-  useEffect(() => {
-    const handleStorage = (e: StorageEvent) => {
-      if (e.key === "workouts") {
-        const stored =
-          typeof window !== "undefined"
-            ? localStorage.getItem("workouts")
-            : null;
-        setWorkouts(stored ? JSON.parse(stored) : []);
-      }
-    };
-    window.addEventListener("storage", handleStorage);
-    return () => {
-      window.removeEventListener("storage", handleStorage);
-    };
-  }, []);
-  // Compute recent workouts from state
+  // Compute recent workouts from props
   const recent = workouts.slice().reverse().slice(0, 5);
-
-  const handleWorkoutDelete = (w: WorkoutData) => {
-    const updatedWorkouts = workouts.filter((workout) => workout !== w);
-    setWorkouts(updatedWorkouts);
-    localStorage.setItem("workouts", JSON.stringify(updatedWorkouts));
-  };
 
   const handleWorkoutSelect = (w: WorkoutData) => {
     setSelectedWorkout(w);
@@ -59,6 +41,10 @@ function RecentWorkouts() {
   const handleEditClose = () => {
     setSelectedWorkout(null);
     setIsEditingVisible(false);
+  };
+
+  const handleWorkoutDelete = (w: WorkoutData) => {
+    onWorkoutDelete(w);
   };
 
   return (
@@ -123,6 +109,7 @@ function RecentWorkouts() {
         {isEditingVisible && (
           <EditWorkout
             onClose={handleEditClose}
+            onSave={onWorkoutUpdate}
             workout={selectedWorkout || null}
           />
         )}

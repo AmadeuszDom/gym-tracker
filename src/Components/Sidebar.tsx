@@ -3,9 +3,10 @@ import AddWorkoutForm from "./AddWorkoutForm";
 
 interface SidebarProps {
   isActive: boolean;
+  onWorkoutCreated?: () => void;
 }
 
-function Sidebar({ isActive }: SidebarProps) {
+function Sidebar({ isActive, onWorkoutCreated }: SidebarProps) {
   const [isAddWorkoutOpen, setIsAddWorkoutOpen] = useState(false);
   const sidebarItems = [
     { icon: "🏠", label: "Dashboard", route: "/dashboard" },
@@ -57,7 +58,10 @@ function Sidebar({ isActive }: SidebarProps) {
         </div>
       </section>
       {isAddWorkoutOpen && (
-        <AddWorkoutForm onClose={() => setIsAddWorkoutOpen(false)} />
+        <AddWorkoutForm
+          onClose={() => setIsAddWorkoutOpen(false)}
+          onWorkoutCreated={onWorkoutCreated}
+        />
       )}
     </>
   );
