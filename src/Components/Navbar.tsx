@@ -39,7 +39,7 @@ function Navbar({ onMenuToggle }: NavbarProps) {
           PROGRESS
         </a>
         <a
-          href="/"
+          href="/workouts"
           className="nav-link px-3 py-1.5 rounded-md text-sm font-medium hover:text-white hover:bg-[#2a2a3a] transition text-[#8888A0] focus:text-[#E8793B] focus:bg-[#E8793B]/10"
         >
           WORKOUTS
