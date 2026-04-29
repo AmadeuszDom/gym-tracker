@@ -63,18 +63,6 @@ function DashboardWorkoutPlan({
             {workoutPlan.planName}
           </h3>
           <div className="flex items-center gap-2">
-            {onRemove && (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onRemove();
-                }}
-                className="text-[#8888A0] hover:text-[#EF4444] transition text-lg"
-                title="Delete plan"
-              >
-                ×
-              </button>
-            )}
             <span className="text-[#8888A0] text-sm">›</span>
           </div>
         </div>

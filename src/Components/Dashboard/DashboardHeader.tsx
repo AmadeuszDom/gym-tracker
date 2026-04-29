@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Icon from "../../../public/Icons";
 import AddWorkoutPlanForm from "./AddWorkoutPlanForm";
 import DashboardWorkoutPlan from "./DashboardWorkoutPlan";
@@ -30,10 +30,19 @@ function DashboardHeader({ username }: Props) {
   const [selectedPlan, setSelectedPlan] = useState<WorkoutPlanFormData | null>(
     null,
   );
-  const [workoutPlans, setWorkoutPlans] = useState<WorkoutPlanFormData[]>([]);
+  const [workoutPlans, setWorkoutPlans] = useState<WorkoutPlanFormData[]>(
+    () => {
+      const saved = localStorage.getItem("workoutPlans");
+      return saved ? JSON.parse(saved) : [];
+    },
+  );
 
   const handleFormSubmit = (data: WorkoutPlanFormData) => {
-    setWorkoutPlans((prev) => [...prev, data]);
+    setWorkoutPlans((prev) => {
+      const newPlans = [...prev, data];
+      localStorage.setItem("workoutPlans", JSON.stringify(newPlans));
+      return newPlans;
+    });
     console.log("New workout plan created:", data);
     // TODO: Send to backend/API
   };
@@ -49,7 +58,11 @@ function DashboardHeader({ username }: Props) {
   };
 
   const handleRemovePlan = (planToRemove: WorkoutPlanFormData) => {
-    setWorkoutPlans((prev) => prev.filter((plan) => plan !== planToRemove));
+    setWorkoutPlans((prev) => {
+      const newPlans = prev.filter((plan) => plan !== planToRemove);
+      localStorage.setItem("workoutPlans", JSON.stringify(newPlans));
+      return newPlans;
+    });
     setIsPlanOpen(false);
     setSelectedPlan(null);
   };
