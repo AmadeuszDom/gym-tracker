@@ -8,6 +8,7 @@ interface ExerciseItem {
   name: string;
   sets: number;
   reps: number;
+  weight: number;
 }
 
 interface WorkoutData {
@@ -22,7 +23,8 @@ function Workouts() {
 
   // Refresh from localStorage – used when Sidebar adds a new workout directly
   const refreshWorkouts = () => {
-    const stored = typeof window !== "undefined" ? localStorage.getItem("workouts") : null;
+    const stored =
+      typeof window !== "undefined" ? localStorage.getItem("workouts") : null;
     setWorkouts(stored ? JSON.parse(stored) : []);
   };
 
@@ -39,7 +41,11 @@ function Workouts() {
   const handleWorkoutDelete = (deletedWorkout: WorkoutData) => {
     setWorkouts((prev) =>
       prev.filter(
-        (w) => !(w.planName === deletedWorkout.planName && w.date === deletedWorkout.date),
+        (w) =>
+          !(
+            w.planName === deletedWorkout.planName &&
+            w.date === deletedWorkout.date
+          ),
       ),
     );
     // No extra refresh – UI updates via context state change
