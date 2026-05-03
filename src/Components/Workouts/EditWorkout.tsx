@@ -1,17 +1,6 @@
 import React, { useState } from "react";
 
-interface ExerciseItem {
-  name: string;
-  sets: number;
-  reps: number;
-  weight: number;
-}
-
-interface WorkoutData {
-  planName: string;
-  date: string;
-  exercises: ExerciseItem[];
-}
+import type { ExerciseItem, WorkoutData } from "../../contexts/WorkoutsContext";
 
 interface Props {
   onClose: () => void;

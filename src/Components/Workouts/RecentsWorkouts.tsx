@@ -1,18 +1,7 @@
 import React, { useState } from "react";
 import EditWorkout from "./EditWorkout";
 
-interface ExerciseItem {
-  name: string;
-  sets: number;
-  reps: number;
-  weight: number;
-}
-
-interface WorkoutData {
-  planName: string;
-  date: string;
-  exercises: ExerciseItem[];
-}
+import type { ExerciseItem, WorkoutData } from "../../contexts/WorkoutsContext";
 
 interface RecentWorkoutsProps {
   workouts: WorkoutData[];

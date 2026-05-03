@@ -3,19 +3,7 @@ import Navbar from "./Components/Navbar";
 import Sidebar from "./Components/Sidebar";
 import WorkoutsSection from "./Components/Workouts/WorkoutsSection";
 import { useWorkouts } from "./contexts/WorkoutsContext"; // context hook
-
-interface ExerciseItem {
-  name: string;
-  sets: number;
-  reps: number;
-  weight: number;
-}
-
-interface WorkoutData {
-  planName: string;
-  date: string;
-  exercises: ExerciseItem[];
-}
+import type { WorkoutData } from "./contexts/WorkoutsContext";
 
 function Workouts() {
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);

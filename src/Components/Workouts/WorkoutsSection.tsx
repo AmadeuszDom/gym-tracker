@@ -2,18 +2,7 @@ import WorkoutsHeader from "./WorkoutsHeader";
 import WorkoutsCalendar from "./WorkoutsCalendar";
 import RecentWorkouts from "./RecentsWorkouts";
 
-interface ExerciseItem {
-  name: string;
-  sets: number;
-  reps: number;
-  weight: number;
-}
-
-interface WorkoutData {
-  planName: string;
-  date: string;
-  exercises: ExerciseItem[];
-}
+import type { WorkoutData } from "../../contexts/WorkoutsContext";
 
 interface WorkoutsSectionProps {
   workouts: WorkoutData[];
