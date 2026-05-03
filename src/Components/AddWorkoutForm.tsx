@@ -9,6 +9,7 @@ interface ExerciseItem {
   name: string;
   sets: number;
   reps: number;
+  weight: number;
 }
 
 interface WorkoutPlanFormData {
@@ -37,6 +38,7 @@ interface ExerciseErrors {
     name?: string;
     sets?: string;
     reps?: string;
+    weight?: string;
   };
 }
 
@@ -81,6 +83,7 @@ function AddWorkoutForm({ onClose, onWorkoutCreated }: Props) {
           name?: string;
           sets?: string;
           reps?: string;
+          weight?: string;
         } = {};
 
         if (!ex.name.trim()) {
@@ -93,6 +96,9 @@ function AddWorkoutForm({ onClose, onWorkoutCreated }: Props) {
 
         if (ex.reps < 1) {
           currentExErrors.reps = `Exercise #${i + 1} reps must be at least 1.`;
+        }
+        if (ex.weight < 1) {
+          currentExErrors.weight = `Exercise #${i + 1} weight must be at least 1.`;
         }
 
         if (Object.keys(currentExErrors).length > 0) {
@@ -213,7 +219,7 @@ function AddWorkoutForm({ onClose, onWorkoutCreated }: Props) {
                   {selectedPlan.exercises.map((exercise, index) => (
                     <div key={index}>
                       <div className="flex gap-1.5 bg-[#1e1e2e] border border-[#2a2a3a] rounded-lg text-[#E4E4E7] p-2 items-center ">
-                        <div className="flex  gap-1.5 bg-[#1e1e2e] border border-[#2a2a3a] rounded-lg p-2 items-center w-full">
+                        <div className="flex  gap-4 bg-[#1e1e2e] border border-[#2a2a3a] rounded-lg p-2 items-center w-full">
                           <p className="flex-1">{exercise.name}</p>
 
                           <label className="text-sm text-[#E4E4E7]">
@@ -246,6 +252,24 @@ function AddWorkoutForm({ onClose, onWorkoutCreated }: Props) {
                               setSelectedPlan((prev) => {
                                 const newEx = [...prev.exercises];
                                 newEx[index] = { ...newEx[index], reps: val };
+                                return { ...prev, exercises: newEx };
+                              });
+                            }}
+                            className="flex-1 min-w-0 bg-[#2a2a3a] text-[#E4E4E7] p-1 rounded-lg focus:outline-none"
+                          />
+
+                          <label className="text-sm text-[#E4E4E7] ml-2">
+                            Kg:{" "}
+                          </label>
+                          <input
+                            type="number"
+                            min="0"
+                            value={exercise.weight}
+                            onChange={(e) => {
+                              const val = Number(e.target.value);
+                              setSelectedPlan((prev) => {
+                                const newEx = [...prev.exercises];
+                                newEx[index] = { ...newEx[index], weight: val };
                                 return { ...prev, exercises: newEx };
                               });
                             }}

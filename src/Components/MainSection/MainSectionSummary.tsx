@@ -1,12 +1,16 @@
 import SummaryCard from "./SummaryCard";
 import Icon from "../../../public/Icons";
+import { useWorkouts } from "../../contexts/WorkoutsContext";
+import { weeklyStats } from "../../utils/workoutHelpers";
 
 function MainSectionSummary() {
+  const { workouts } = useWorkouts();
+  const { totalWeight, totalSets, totalReps, count } = weeklyStats(workouts);
   const cardsData = [
     {
       icon: Icon.calcCard,
       title: "TOTAL WEIGHT LIFTED",
-      value: "12 560kg",
+      value: `${totalWeight} kg`,
       color: "#E8793B",
       color2: "#F4A261",
       perc: 45,
@@ -23,7 +27,7 @@ function MainSectionSummary() {
     {
       icon: Icon.repCard,
       title: "TOTAL SETS",
-      value: "138 sets",
+      value: `${totalSets} sets`,
       color: "#EC4899",
       color2: "#F472B6",
       perc: 65,

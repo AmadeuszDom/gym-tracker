@@ -18,7 +18,7 @@ function Sidebar({ isActive, onWorkoutCreated }: SidebarProps) {
     },
     { icon: "📊", label: "Progress", route: "/" },
     { icon: "📅", label: "History", route: "/workouts" },
-    { icon: "⚙️", label: "Settings", route: "/" },
+    { icon: "⚙️", label: "Settings", route: "/settings" },
   ];
 
   return (

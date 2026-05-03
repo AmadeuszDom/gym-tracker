@@ -4,6 +4,7 @@ interface ExerciseItem {
   name: string;
   sets: number;
   reps: number;
+  weight: number;
 }
 
 interface WorkoutPlanFormData {
@@ -31,6 +32,7 @@ interface ExerciseErrors {
   name?: string;
   sets?: string;
   reps?: string;
+  weight?: string;
 }
 
 const muscleGroups = [
@@ -60,6 +62,7 @@ function AddWorkoutPlanForm({ onClose, onSubmit }: AddWorkoutPlanFormProps) {
     name: "",
     sets: 1,
     reps: 1,
+    weight: 1,
   });
 
   const [errors, setErrors] = useState<FormErrors>({});
@@ -108,6 +111,9 @@ function AddWorkoutPlanForm({ onClose, onSubmit }: AddWorkoutPlanFormProps) {
     if (exerciseData.reps < 1) {
       exerciseErrors.reps = "Reps must be at least 1.";
     }
+    if (exerciseData.weight < 1) {
+      exerciseError.weight = "Weight must be at least 1.";
+    }
 
     setExerciseError(exerciseErrors);
     return Object.keys(exerciseErrors).length === 0;
@@ -125,6 +131,7 @@ function AddWorkoutPlanForm({ onClose, onSubmit }: AddWorkoutPlanFormProps) {
       name: "",
       sets: prev.sets,
       reps: prev.reps,
+      weight: prev.weight,
     }));
 
     setExerciseError({});
@@ -351,6 +358,28 @@ function AddWorkoutPlanForm({ onClose, onSubmit }: AddWorkoutPlanFormProps) {
                   {exerciseError.reps && (
                     <p className="text-[#E8793B] text-xs mt-2">
                       {exerciseError.reps}
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-[#E4E4E7] mb-2">
+                    Weight (kg) <span className="text-[#E8793B]">*</span>
+                  </label>
+                  <input
+                    type="number"
+                    min="1"
+                    onChange={(e) =>
+                      setExerciseData((prev) => ({
+                        ...prev,
+                        weight: Number(e.target.value) || 1,
+                      }))
+                    }
+                    className="w-full px-4 py-2 bg-[#1e1e2e] border border-[#2a2a3a] rounded-lg text-[#E4E4E7] focus:border-[#E8793B] focus:outline-none transition"
+                    placeholder="1"
+                  />
+                  {exerciseError.weight && (
+                    <p className="text-[#E8793B] text-xs mt-2">
+                      {exerciseError.weight}
                     </p>
                   )}
                 </div>

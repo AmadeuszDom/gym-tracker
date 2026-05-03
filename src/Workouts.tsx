@@ -1,8 +1,8 @@
 import { useState } from "react";
-
 import Navbar from "./Components/Navbar";
 import Sidebar from "./Components/Sidebar";
 import WorkoutsSection from "./Components/Workouts/WorkoutsSection";
+import { useWorkouts } from "./contexts/WorkoutsContext"; // context hook
 
 interface ExerciseItem {
   name: string;
@@ -18,45 +18,36 @@ interface WorkoutData {
 
 function Workouts() {
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
-  const [workouts, setWorkouts] = useState<WorkoutData[]>(() => {
-    const stored =
-      typeof window !== "undefined" ? localStorage.getItem("workouts") : null;
-    return stored ? JSON.parse(stored) : [];
-  });
+  const { workouts, setWorkouts } = useWorkouts(); // state from context
 
+  // Refresh from localStorage – used when Sidebar adds a new workout directly
   const refreshWorkouts = () => {
-    const stored =
-      typeof window !== "undefined" ? localStorage.getItem("workouts") : null;
+    const stored = typeof window !== "undefined" ? localStorage.getItem("workouts") : null;
     setWorkouts(stored ? JSON.parse(stored) : []);
   };
 
   const handleWorkoutUpdate = (updatedWorkout: WorkoutData) => {
-    const updatedWorkouts = workouts.map((workout) =>
-      workout.planName === updatedWorkout.planName &&
-      workout.date === updatedWorkout.date
-        ? updatedWorkout
-        : workout,
+    setWorkouts((prev) =>
+      prev.map((w) =>
+        w.planName === updatedWorkout.planName && w.date === updatedWorkout.date
+          ? updatedWorkout
+          : w,
+      ),
     );
-    setWorkouts(updatedWorkouts);
-    localStorage.setItem("workouts", JSON.stringify(updatedWorkouts));
   };
 
   const handleWorkoutDelete = (deletedWorkout: WorkoutData) => {
-    const updatedWorkouts = workouts.filter(
-      (workout) =>
-        !(
-          workout.planName === deletedWorkout.planName &&
-          workout.date === deletedWorkout.date
-        ),
+    setWorkouts((prev) =>
+      prev.filter(
+        (w) => !(w.planName === deletedWorkout.planName && w.date === deletedWorkout.date),
+      ),
     );
-    setWorkouts(updatedWorkouts);
-    localStorage.setItem("workouts", JSON.stringify(updatedWorkouts));
+    // No extra refresh – UI updates via context state change
   };
 
   return (
     <div className="flex flex-col h-screen">
-      {" "}
-      <Navbar onMenuToggle={() => setIsSideBarOpen(!isSideBarOpen)}></Navbar>
+      <Navbar onMenuToggle={() => setIsSideBarOpen(!isSideBarOpen)} />
       <div className="flex flex-1 w-full">
         <Sidebar isActive={isSideBarOpen} onWorkoutCreated={refreshWorkouts} />
         <WorkoutsSection
